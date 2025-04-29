@@ -109,14 +109,15 @@ app.use('/api/login', require('./Routes/auth'));
 app.use('/api/plagiarism', require('./Routes/plagiarism'));
 
 // ✅ Serve static files from React build
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
 // ✅ Catch-all for React Router
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 // Server start
-app.listen(port, () => {
-  console.log(`SherNotebook app listening on port ${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Listening on port ${port}`);
 });
+
