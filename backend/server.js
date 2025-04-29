@@ -92,7 +92,7 @@
 const db = require('./db');
 const cors = require('cors');
 const express = require('express');
-const path = require('path'); // ✅ Import path
+const path = require('path'); //  Import path
 
 const app = express();
 const port = 5000;
@@ -112,9 +112,15 @@ app.use('/api/plagiarism', require('./Routes/plagiarism'));
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
 // ✅ Catch-all for React Router
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+app.get((req, res, next) => {
+  // If the request doesn't start with "/api", serve React
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  } else {
+    next(); // Let Express handle other routes (like /api/*)
+  }
 });
+
 
 // Server start
 app.listen(port, '0.0.0.0', () => {
